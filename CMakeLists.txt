@@ -33,3 +33,6 @@ target_link_libraries(jetsonsvr_tc ssm Threads::Threads )
 #target_link_libraries(jetson-sender ssm)
 target_link_libraries(test-viewer ssm)
 target_link_libraries(test-command ssm)
+
+add_subdirectory(./shm_jetson_status)
+
