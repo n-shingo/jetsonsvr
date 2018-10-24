@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 project(jetsonsvr_tc)
 
-#include_directories( ../../include )
+include_directories( ../systemMgr/src ../utility/src)
 
 # set the default path for built executables to the "bin" directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
