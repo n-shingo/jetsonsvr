@@ -6,6 +6,9 @@
 // T.Hasegawa
 // Update: 2017-10-24
 // Update: 2018-10-13
+//
+// S.Nakamura
+// Update: 2018-20-24
 //-------------------------------------------------
 #include <cstdio>
 #include <iostream>
@@ -20,6 +23,7 @@
 #include "UdpSender.hpp"
 #include "UdpReceiver2.hpp"
 #include "Tool.hpp"
+#include "../shm_jetson_status/src/shmJetsonStatus.h"
 
 using namespace std;
 using namespace sn;
@@ -120,7 +124,7 @@ int main( int aArgc, char **aArgv )
         
         // jetson_status を開く
         std::cerr << "open jetson_status... ";
-        if( !jetson_status.open( SSM_READ ) )
+        if( !jetson_status.create( 1.0, 1.0/10.0 ) )
             throw std::runtime_error( "[\033[1m\033[31mERROR\033[30m\033[0m]:fail to open jetson_status on ssm.\n" );
         else
             std::cerr << "OK.\n";
@@ -147,7 +151,14 @@ int main( int aArgc, char **aArgv )
             throw std::runtime_error( "[\033[1m\033[31mERROR\033[30m\033[0m]:fail to open wp_gl on ssm.\n" );
         else
             std::cerr << "OK.\n";
-            
+
+        // JetsonStatusWriter を開く
+        std::cerr << "open JetsonStatusWriter... ";
+        if( !JetsonStatusWriter::open() )
+            throw std::runtime_error( "[\033[1m\033[31mERROR\033[30m\033[0m]:fail to open JetsonStatusWriter.\n" );
+        else
+            std::cerr << "OK.\n";
+
         // Jetson Status Parser
         JetsonStatusParser status_parser;
         // Stopwatch
@@ -218,8 +229,12 @@ int main( int aArgc, char **aArgv )
 
             // 新しいデータであればssmへ書き込み
             if( data_writing ){
+                // ssm へ書き込み
                 memcpy( &jetson_status.data, &status, sizeof( status ) );
                 jetson_status.write( );
+
+                // 共有メモリへ書き込み
+                JetsonStatusWriter::write( status );
 
                 if( view_flag ){
                     // 受信データ表示
@@ -269,6 +284,7 @@ int main( int aArgc, char **aArgv )
         }
 
         jetson_status.release( );
+        JetsonStatusWriter::close();
 //      jetson_command.release( );
         wp_gl.release( );
         udp_sender.close();

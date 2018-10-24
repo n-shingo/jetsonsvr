@@ -113,7 +113,7 @@ int main(int argc, char ** argv)
 		char line[64];
 		printf ("1:Idling, 2:Search Pearson, 3:Detect Signal, q:Quit\n" );
 		printf ("\x1b[K# > " );
-		fgets( line, sizeof(line), stdin );
+        char* res = fgets( line, sizeof(line), stdin );
 
 		// コマンドの妥当性チェック
 		bool cmd_valid = true;

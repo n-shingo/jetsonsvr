@@ -21,7 +21,8 @@ find_package(Threads REQUIRED)
 
 add_executable(jetsonsvr_tc
 	./src/jetsonsvr.cpp
-	./src/UdpSender.cpp ./src/UdpReceiver2.cpp ./src/Tool.cpp)
+	./src/UdpSender.cpp ./src/UdpReceiver2.cpp ./src/Tool.cpp
+    ./shm_jetson_status/src/shmJetsonStatus.cpp )
 #add_executable(jetson-recver ./src/jetson-recver.cpp ./src/UdpReceiver2.cpp ./src/Tool.cpp)
 #add_executable(jetson-sender ./src/jetson-sender.cpp ./src/UdpSender.cpp ./src/Tool.cpp)
 add_executable(test-viewer ./src/test-viewer.cpp ./src/Tool.cpp)

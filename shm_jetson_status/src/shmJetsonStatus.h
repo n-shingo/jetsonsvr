@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../src/Jetson-COM-DATA.hpp"
+#include "../../src/Jetson-COM-DATA.hpp"
 
 namespace sn{
 
